@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BotPenguin Chatbot Test Environment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .test-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .info-section {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-section h3 {
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding-left: 30px;
+        }
+
+        .info-section li {
+            margin: 10px 0;
+            color: #555;
+            position: relative;
+        }
+
+        .info-section li:before {
+            content: "✓";
+            color: #667eea;
+            position: absolute;
+            left: -20px;
+            font-weight: bold;
+        }
+
+        .test-controls {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .test-controls h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-info {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .status-card {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .status-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .status-label {
+            font-weight: 600;
+            width: 120px;
+            color: #555;
+        }
+
+        .status-value {
+            color: #333;
+            flex: 1;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fed7aa;
+            color: #92400e;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9ff;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+            
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .status-label {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="header">
+            <h1>🤖 BotPenguin Chatbot Test Environment</h1>
+            <p>Test your WhatsApp & Website chatbot integration in production</p>
+        </div>
+
+        <div class="content">
+            <div class="info-section">
+                <h3>📋 Integration Details</h3>
+                <ul>
+                    <li><strong>Bot ID:</strong> 69803a093817049868bf064f</li>
+                    <li><strong>User ID:</strong> 696f4cdf88f4a8046c67188e</li>
+                    <li><strong>Platform:</strong> WhatsApp & Website Support</li>
+                    <li><strong>Flow:</strong> Aajoo Homes Omnichannel Support</li>
+                </ul>
+            </div>
+
+            <div class="test-controls">
+                <h3>🎮 Test Controls</h3>
+                <div class="button-grid">
+                    <button class="btn btn-primary" onclick="toggleChat()">
+                        <span>💬</span> Toggle Chat
+                    </button>
+                    <button class="btn btn-success" onclick="openChat()">
+                        <span>🔓</span> Open Chat
+                    </button>
+                    <button class="btn btn-info" onclick="checkStatus()">
+                        <span>📊</span> Check Status
+                    </button>
+                    <button class="btn btn-warning" onclick="resetChat()">
+                        <span>🔄</span> Reset Session
+                    </button>
+                </div>
+            </div>
+
+            <div class="status-card">
+                <h3>📈 Integration Status</h3>
+                <div class="status-item">
+                    <span class="status-label">SDK Status:</span>
+                    <div class="status-value">
+                        <span class="status-badge badge-success" id="sdkStatus">✓ Loaded</span>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Bot ID:</span>
+                    <div class="status-value">
+                        <code>69803a093817049868bf064f</code>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">User ID:</span>
+                    <div class="status-value">
+                        <code>696f4cdf88f4a8046c67188e</code>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Chat State:</span>
+                    <div class="status-value">
+                        <span class="status-badge" id="chatState">Ready</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 10px; border-left: 4px solid #ffc107;">
+                <h4 style="color: #856404; margin-bottom: 5px;">⚠️ Production Test Notes</h4>
+                <p style="color: #856404; font-size: 0.95em;">
+                    • The chatbot is configured with the Aajoo Homes support flow<br>
+                    • Test both Guest and Host support scenarios<br>
+                    • Language selection is active for WhatsApp<br>
+                    • Human takeover will connect to support team<br>
+                    • Type MENU anytime to restart the flow
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Powered by <a href="#" target="_blank">BotPenguin</a> | Aajoo Homes Support Flow v1.0</p>
+        </div>
+    </div>
+
+    <!-- BotPenguin Chatbot SDK Integration -->
+    <script id="messenger-widget-b" src="https://cdn.botpenguin.com/website-bot.js" defer>69803a093817049868bf064f,696f4cdf88f4a8046c67188e</script>
+
+    <script>
+        // Test environment controls
+        function toggleChat() {
+            const messenger = document.getElementById('BotPenguin-messenger');
+            const launcher = document.getElementById('botpenguin-launcher-12');
+            
+            if (messenger && messenger.style.display === 'block') {
+                closeChat();
+            } else {
+                openChat();
+            }
+        }
+
+        function openChat() {
+            const messenger = document.getElementById('BotPenguin-messenger');
+            const launcher = document.getElementById('botpenguin-launcher-12');
+            
+            if (messenger) {
+                messenger.style.display = 'block';
+                messenger.classList.add('scale-in-br');
+                updateChatState('Open');
+            }
+            
+            if (launcher) {
+                launcher.style.visibility = 'hidden';
+                launcher.style.opacity = '0';
+            }
+        }
+
+        function closeChat() {
+            const messenger = document.getElementById('BotPenguin-messenger');
+            const launcher = document.getElementById('botpenguin-launcher-12');
+            
+            if (messenger) {
+                messenger.style.display = 'none';
+                messenger.classList.remove('scale-in-br');
+                updateChatState('Closed');
+            }
+            
+            if (launcher) {
+                launcher.style.visibility = 'visible';
+                launcher.style.opacity = '1';
+            }
+        }
+
+        function checkStatus() {
+            const messenger = document.getElementById('BotPenguin-messenger');
+            const launcher = document.getElementById('botpenguin-launcher-12');
+            const botpenguinRoot = document.querySelector('botpenguin-root');
+            
+            let statusMessage = '📊 BotPenguin Status:\n';
+            statusMessage += `• BotPenguin Root: ${botpenguinRoot ? '✓ Present' : '✗ Missing'}\n`;
+            statusMessage += `• Messenger Widget: ${messenger ? '✓ Present' : '✗ Missing'}\n`;
+            statusMessage += `• Launcher Widget: ${launcher ? '✓ Present' : '✗ Missing'}\n`;
+            statusMessage += `• Messenger Display: ${messenger ? messenger.style.display : 'N/A'}\n`;
+            
+            alert(statusMessage);
+            
+            // Update UI state
+            updateChatState(messenger && messenger.style.display === 'block' ? 'Open' : 'Closed');
+        }
+
+        function resetChat() {
+            // Clear any stored session data
+            localStorage.removeItem('__BotPenguin');
+            localStorage.removeItem('__BotPenguinUser');
+            localStorage.removeItem('Ctx_Custom_Attributes');
+            localStorage.removeItem('Ctx_Default_Attributes');
+            
+            // Close chat if open
+            closeChat();
+            
+            // Show reset confirmation
+            alert('🔄 Chat session reset. Refresh the page to restart the chat.');
+            
+            // Optional: Reload the page after a brief delay
+            setTimeout(() => {
+                if (confirm('Refresh page to complete reset?')) {
+                    location.reload();
+                }
+            }, 500);
+        }
+
+        function updateChatState(state) {
+            const stateElement = document.getElementById('chatState');
+            if (stateElement) {
+                stateElement.textContent = state;
+                stateElement.className = 'status-badge ' + (state === 'Open' ? 'badge-success' : 'badge-warning');
+            }
+        }
+
+        // Monitor SDK load
+        window.addEventListener('load', function() {
+            console.log('✅ Page loaded, checking BotPenguin SDK...');
+            
+            // Check if SDK loaded successfully
+            setTimeout(() => {
+                const botpenguinRoot = document.querySelector('botpenguin-root');
+                const sdkStatus = document.getElementById('sdkStatus');
+                
+                if (botpenguinRoot) {
+                    console.log('✅ BotPenguin SDK loaded successfully');
+                    if (sdkStatus) {
+                        sdkStatus.textContent = '✓ Loaded & Active';
+                        sdkStatus.className = 'status-badge badge-success';
+                    }
+                    
+                    // Log integration details
+                    console.log('🤖 Bot ID:', '69803a093817049868bf064f');
+                    console.log('👤 User ID:', '696f4cdf88f4a8046c67188e');
+                    
+                    // Check localStorage for bot data
+                    const botData = localStorage.getItem('__BotPenguin');
+                    const userData = localStorage.getItem('__BotPenguinUser');
+                    console.log('💾 Bot Data:', botData ? 'Present' : 'Not found');
+                    console.log('💾 User Data:', userData ? 'Present' : 'Not found');
+                } else {
+                    console.error('❌ BotPenguin SDK failed to load');
+                    if (sdkStatus) {
+                        sdkStatus.textContent = '✗ Failed to load';
+                        sdkStatus.className = 'status-badge badge-warning';
+                    }
+                }
+            }, 2000);
+        });
+
+        // Expose functions globally for button clicks
+        window.toggleChat = toggleChat;
+        window.openChat = openChat;
+        window.closeChat = closeChat;
+        window.checkStatus = checkStatus;
+        window.resetChat = resetChat;
+    </script>
+</body>
+</html>
